@@ -6,6 +6,9 @@ on:
 
 env:
   DOCKERHUB_REPO: thawatchai95/hello-web
+  MANIFEST_REPO: thawatchai-rvc/02-Action-WebDemo-CICD  # เปลี่ยนเป็น repo ของคุณ
+  MANIFEST_BRANCH: main
+  MANIFEST_PATH: app-manifests/01-deployment.yaml
 
 jobs:
   build_and_push:
@@ -31,3 +34,28 @@ jobs:
           tags: |
             ${{ env.DOCKERHUB_REPO }}:latest
             ${{ env.DOCKERHUB_REPO }}:sha-${{ github.sha }}
+
+    # 👇 เพิ่มส่วนนี้: อัปเดต image tag ใน manifest repo
+      - name: Checkout manifest repository
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ env.MANIFEST_REPO }}
+          token: ${{ secrets.GIT_PAT }}  # Personal Access Token
+          path: manifest-repo
+          ref: ${{ env.MANIFEST_BRANCH }}
+
+      - name: Update image tag in deployment.yaml
+        run: |
+          cd manifest-repo
+          # แก้ image tag จาก :latest เป็น :short-sha
+          sed -i "s|image: ${{ env.DOCKERHUB_REPO }}:.*|image: ${{ env.DOCKERHUB_REPO }}:${{ env.SHORT_SHA }}|" ${{ env.MANIFEST_PATH }}
+          cat ${{ env.MANIFEST_PATH }}
+
+      - name: Commit and push changes
+        run: |
+          cd manifest-repo
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add .
+          git commit -m "Update image tag to ${{ env.SHORT_SHA }}"
+          git push
