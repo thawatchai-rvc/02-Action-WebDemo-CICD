@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: nginx
-          image: thawatchai95/hello-web:latest
+          image: thawatchai95/hello-web:
           imagePullPolicy: Always
           ports:
             - containerPort: 80
