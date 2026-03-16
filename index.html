@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Hello Web (Docker + GitHub Actions)</title>
+  <style>
+    body { font-family: system-ui, sans-serif; margin: 40px; line-height: 1.5; }
+    .card { max-width: 720px; padding: 20px; border: 1px solid #ddd; border-radius: 12px; }
+    button { padding: 10px 14px; border-radius: 10px; border: 1px solid #ccc; cursor: pointer; }
+    .muted { color: #666; font-size: 14px; }
+    code { background: #f3f3f3; padding: 2px 6px; border-radius: 6px; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>สวัสดี! 👋</h1>
+    <p>นี่คือเว็บ <b>HTML ล้วน</b> สำหรับทดสอบบน VS Code และเอาไปทำ CI/CD push ไป Docker Hub ได้</p>
+    <p>V2.0</p>
+    <p>V3.0</p>
+    <p>V4.0</p>
+    <p>V5.0</p>
+
+    <p>
+      ปุ่มด้านล่างจะเปลี่ยนข้อความ และแสดงเวลาปัจจุบัน:
+    </p>
+
+    <button id="btn">กดเพื่อทดสอบ</button>
+    <p id="msg" class="muted">ยังไม่ได้กดปุ่ม</p>
+
+    <hr />
+    <p class="muted">
+      ถ้ารันผ่าน Docker แล้วเข้าไม่ได้ ให้ลองเปิด <code>http://localhost:8080</code>
+    </p>
+  </div>
+
+  <script>
+    const btn = document.getElementById("btn");
+    const msg = document.getElementById("msg");
+
+    btn.addEventListener("click", () => {
+      const now = new Date();
+      msg.textContent = `ปุ่มทำงานแล้ว ✅ เวลา: ${now.toLocaleString("th-TH")}`;
+    });
+  </script>
+</body>
+</html>
