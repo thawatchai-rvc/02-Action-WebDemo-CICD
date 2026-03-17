@@ -8,7 +8,7 @@ env:
   DOCKERHUB_REPO: thawatchai95/hello-web
   MANIFEST_REPO: thawatchai-rvc/02-Action-WebDemo-CICD  # เปลี่ยนเป็น repo ของคุณ
   MANIFEST_BRANCH: main
-  MANIFEST_PATH: app-manifests/01-deployment.yaml
+  MANIFEST_PATH: k8s/01-deployment.yaml
 
 jobs:
   build_and_push:
