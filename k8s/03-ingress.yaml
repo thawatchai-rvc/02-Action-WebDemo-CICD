@@ -1,17 +1,39 @@
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: ingress-nginx-controller
+#   namespace: ingress-nginx
+# spec:
+#   type: LoadBalancer
+#   selector:
+#     app.kubernetes.io/name: ingress-nginx
+#     app.kubernetes.io/component: controller
+#   ports:
+#     - name: http
+#       port: 80
+#       targetPort: http
+#     - name: https
+#       port: 443
+#       targetPort: https
+
+# ingress-controller-service.yaml
+# อันนี้มักจะติดตั้งมาพร้อมกับ Ingress Controller
+# แต่ขอยกมาให้เห็นว่า Service ของ Ingress Controller เป็นแบบ NodePort
 apiVersion: v1
 kind: Service
 metadata:
   name: ingress-nginx-controller
   namespace: ingress-nginx
 spec:
-  type: LoadBalancer
-  selector:
-    app.kubernetes.io/name: ingress-nginx
-    app.kubernetes.io/component: controller
+  type: NodePort  # ใช้ NodePort เพื่อให้ HAProxy ส่งต่อมาได้
   ports:
     - name: http
       port: 80
-      targetPort: http
+      targetPort: 80
+      nodePort: 32080  # ค่า NodePort สำหรับ HTTP
     - name: https
       port: 443
-      targetPort: https
+      targetPort: 443
+      nodePort: 32443  # ค่า NodePort สำหรับ HTTPS
+  selector:
+    app.kubernetes.io/name: ingress-nginx
